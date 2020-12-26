@@ -1,9 +1,9 @@
 from fastapi import Depends, APIRouter, HTTPException
 from sqlalchemy.orm import Session
 
-from ..data_models.users import UserCreate
-from ..database_schemas.base import get_db_session
-from ..database_schemas.users import User as UserTable
+from data_models.users import UserCreate
+from database_schemas.base import get_db_session
+from database_schemas.users import User as UserTable
 
 
 # CREATE
