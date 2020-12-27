@@ -4,7 +4,7 @@ ROOT="$(git rev-parse --show-toplevel)"
 cd "${ROOT}"
 
 # Ensure git hooks.
-if [[ -d "${ROOT}/.git/hooks" ]]; then
+if [[ -d "${ROOT}/.git/hooks" && ! -L "${ROOT}/.git/hooks" ]]; then
   echo "Setup git hooks ..."
   mv "${ROOT}/.git/hooks" "${ROOT}/.git/hooks_default"
   ln -s "${ROOT}/git_hooks" "${ROOT}/.git/hooks"
