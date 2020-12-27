@@ -12,5 +12,10 @@ fi
 
 # Start local dev servers.
 docker-compose --env-file ./.env.dev up \
+  --build \
   --force-recreate \
-  --detach
+  --detach \
+  --renew-anon-volumes
+
+# Initialize DB.
+docker-compose exec server python init_db.py
