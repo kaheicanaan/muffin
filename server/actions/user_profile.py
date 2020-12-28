@@ -13,5 +13,4 @@ class UserProfile(object):
         return self.db.query(UserTable).filter(UserTable.id == user_id).first()
 
     def find_by_email(self, email: str):
-        return self.db.query(UserTable).filter(
-            UserTable.email == email).first()
+        return self.db.query(UserTable).filter(UserTable.email == email).first()
