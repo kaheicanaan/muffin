@@ -9,6 +9,10 @@ if [ "${branch}" = "master" ]; then
   exit 1
 fi
 
+# Run black.
+echo "Running black ..."
+black "${ROOT}/server"
+
 # Run pylint.
 echo "Running pylint ..."
 pylint "${ROOT}/server"
