@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import EmailStr
 
-from data_models.users import UserCreate, User
 
 from actions.user_profile import UserProfile
 from actions.user_registration import UserRegistration
+from data_models.users import UserCreate, User
 
 router = APIRouter()
 
@@ -23,7 +24,7 @@ def create_new_user(
 
 
 @router.get("/{user_email}", response_model=User)
-def read_user(user_email: str, user_profile: UserProfile = Depends()):
+def read_user(user_email: EmailStr, user_profile: UserProfile = Depends()):
     db_user = user_profile.find_by_email(email=user_email)
     if db_user is None:
         raise HTTPException(
