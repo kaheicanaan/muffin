@@ -4,11 +4,7 @@ from routers import users
 
 app = FastAPI()
 
-app.include_router(
-    users.router,
-    prefix="/users",
-    tags=["users"]
-)
+app.include_router(users.router, prefix="/users", tags=["users"])
 
 
 @app.get("/", status_code=200)
