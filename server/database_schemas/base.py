@@ -18,20 +18,16 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-class DBSession(object):
-    def __init__(self):
-        self.db = SessionLocal()
-
-    def __enter__(self):
-        return self.db
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        self.db.close()
-
-
-def get_db_session():
-    with DBSession() as db:
+def postgres_db_session():
+    try:
+        db = SessionLocal()
         yield db
+    finally:
+        db.close()
 
+
+# As dependency argument, i.e. `db: Session = Depends(db_session)`, where test may override by
+# `app.dependency_overrides[db_session] = test_db_session`.
+db_session = postgres_db_session
 
 Base = declarative_base()

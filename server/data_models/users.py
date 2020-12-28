@@ -1,8 +1,10 @@
-from pydantic import BaseModel
+from uuid import UUID
+
+from pydantic import BaseModel, EmailStr
 
 
 class UserBase(BaseModel):
-    email: str
+    email: EmailStr
 
 
 class UserCreate(UserBase):
@@ -10,7 +12,7 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
-    id: str
+    id: UUID
     is_active: bool
 
     class Config:
