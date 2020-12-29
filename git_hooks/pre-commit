@@ -11,12 +11,13 @@ fi
 
 commit_py_files="$(git diff --cached --name-only --diff-filter=d | grep "\.py$")"
 if [[ ! -z "${commit_py_files}" ]]; then
+  commit_py_files_array=(${commit_py_files})
   # Run black.
   echo "Running black ..."
-  black "${commit_py_files}"
+  black "${commit_py_files_array[@]}"
 
   # Run pylint.
   echo "Running pylint ..."
-  pylint "${commit_py_files}"
+  pylint "${commit_py_files_array[@]}"
 fi
 
