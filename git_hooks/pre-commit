@@ -9,10 +9,14 @@ if [ "${branch}" = "master" ]; then
   exit 1
 fi
 
-# Run black.
-echo "Running black ..."
-black "${ROOT}/server"
+commit_py_files="$(git diff --cached --name-only --diff-filter=d | grep "\.py$")"
+if [[ ! -z "${commit_py_files}" ]]; then
+  # Run black.
+  echo "Running black ..."
+  black "${commit_py_files}"
 
-# Run pylint.
-echo "Running pylint ..."
-pylint "${ROOT}/server"
+  # Run pylint.
+  echo "Running pylint ..."
+  pylint "${commit_py_files}"
+fi
+
