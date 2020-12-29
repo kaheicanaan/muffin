@@ -9,7 +9,7 @@ if [ "${branch}" = "master" ]; then
   exit 1
 fi
 
-commit_py_files="$(git diff --name-only --cached | grep "\.py$")"
+commit_py_files="$(git diff --cached --name-only --diff-filter=d | grep "\.py$")"
 if [[ ! -z "${commit_py_files}" ]]; then
   # Run black.
   echo "Running black ..."
