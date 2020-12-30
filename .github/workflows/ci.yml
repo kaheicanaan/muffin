@@ -13,20 +13,6 @@ jobs:
     name: Checks
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: muffin_dev
-          POSTGRES_PASSWORD: yume_no_muffin_cafe
-          POSTGRES_DB: muffin_dev
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - name: Checkout branch
         uses: actions/checkout@v2
