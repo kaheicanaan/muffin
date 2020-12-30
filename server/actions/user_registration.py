@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from actions.user_profile import UserProfile
 from data_models.users import User, UserCreate
-from database_schemas.base import db_session
+from database_schemas.db_session import db_session
 from database_schemas.users import UserEntry
 
 

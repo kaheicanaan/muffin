@@ -4,7 +4,7 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from data_models.users import User
-from database_schemas.base import db_session
+from database_schemas.db_session import db_session
 from database_schemas.users import UserEntry
 
 
