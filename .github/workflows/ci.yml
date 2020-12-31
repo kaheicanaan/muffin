@@ -12,7 +12,6 @@ jobs:
   checks:
     name: Checks
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout branch
         uses: actions/checkout@v2
