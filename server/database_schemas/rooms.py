@@ -2,18 +2,19 @@ import enum
 from datetime import datetime
 
 from sqlalchemy import Boolean, Column, DateTime, Enum, Integer, String
+from sqlalchemy.orm import relationship
 
 from .base import Base
 
 
 class RoomType(enum.Enum):
-    chatroom = "Chatroom"  # with basic E2EE features
-    secure_chatroom = "Secure Chatroom"  # with extra security features
-    group = "Group"
-    pub_sub = "Pub Sub"
+    chatroom = "CHATROOM"  # with basic E2EE features
+    secure_chatroom = "SECURE_CHATROOM"  # with extra security features
+    group = "GROUP"
+    broadcast = "BROADCAST"
     # other
-    self = "Self"  # chatroom contains user himself only
-    admin = "Admin"  # Notification from system admin
+    self = "SELF"  # chatroom contains user himself only
+    system = "SYSTEM"  # Notification from system
 
 
 class RoomEntry(Base):
@@ -25,3 +26,5 @@ class RoomEntry(Base):
     description = Column(String, nullable=False)
     created_time = Column(DateTime, default=datetime.utcnow)
     is_active = Column(Boolean, default=True)
+
+    users = relationship("ParticipantEntry", back_populates="room")

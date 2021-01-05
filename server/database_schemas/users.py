@@ -1,4 +1,5 @@
 from sqlalchemy import Boolean, Column, LargeBinary, Integer, String
+from sqlalchemy.orm import relationship
 
 from database_schemas.base import Base
 
@@ -10,3 +11,5 @@ class UserEntry(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(LargeBinary)
     is_active = Column(Boolean, default=True)
+
+    rooms = relationship("ParticipantEntry", back_populates="user")
