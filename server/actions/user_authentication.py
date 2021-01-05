@@ -7,7 +7,7 @@ import bcrypt
 
 logger = logging.getLogger(__name__)
 
-_USER_PASSWORD_SECRET = os.getenv("USER_PASSWORD_SECRET")
+_USER_PASSWORD_SECRET = os.getenv("USER_PASSWORD_SECRET", "")
 
 
 def _pepper(raw_password: str) -> bytes:
