@@ -3,7 +3,7 @@ import enum
 from sqlalchemy import Column, Enum, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
-from .base import Base
+from database_schemas.base import Base
 
 
 class Role(enum.Enum):

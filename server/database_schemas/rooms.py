@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlalchemy import Boolean, Column, DateTime, Enum, Integer, String
 from sqlalchemy.orm import relationship
 
-from .base import Base
+from database_schemas.base import Base
 
 
 class RoomType(enum.Enum):
