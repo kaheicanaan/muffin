@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from actions.user_authentication import hash_password
 from actions.user_profile import UserProfile
-from data_models.users import User, UserCreate
+from data_models.users import UserCreate
 from database_schemas.db_session import db_session
 from database_schemas.users import UserEntry
 
@@ -19,7 +19,7 @@ class UserRegistration(object):
         self.db = db
         self.user_profile = user_profile
 
-    def create_user(self, user: UserCreate) -> User:
+    def create_user(self, user: UserCreate) -> UserEntry:
         if self.user_profile.find_by_email(user.email):
             raise UserAlreadyExistsException()
         hashed_password = hash_password(user.password)
@@ -27,4 +27,4 @@ class UserRegistration(object):
         self.db.add(user_entry)
         self.db.commit()
         self.db.refresh(user_entry)
-        return User.from_orm(user_entry)
+        return user_entry
