@@ -1,5 +1,6 @@
 import enum
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -18,6 +19,9 @@ class Room(BaseModel):
     id: int
     type: RoomType
     name: str
-    description: str
+    description: Optional[str]
     created_time: datetime
     is_active: bool
+
+    class Config:
+        orm_mode = True

@@ -13,7 +13,7 @@ class RoomEntry(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     type = Column(Enum(RoomType), nullable=False)
     name = Column(String, nullable=False)
-    description = Column(String, nullable=False)
+    description = Column(String)
     created_time = Column(DateTime, default=datetime.utcnow)
     is_active = Column(Boolean, default=True)
 
