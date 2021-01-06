@@ -1,20 +1,10 @@
-import enum
 from datetime import datetime
 
 from sqlalchemy import Boolean, Column, DateTime, Enum, Integer, String
 from sqlalchemy.orm import relationship
 
+from data_models.rooms import RoomType
 from database_schemas.base import Base
-
-
-class RoomType(enum.Enum):
-    chatroom = "CHATROOM"  # with basic E2EE features
-    secure_chatroom = "SECURE_CHATROOM"  # with extra security features
-    group = "GROUP"
-    broadcast = "BROADCAST"
-    # other
-    self = "SELF"  # chatroom contains user himself only
-    system = "SYSTEM"  # Notification from system
 
 
 class RoomEntry(Base):
