@@ -1,16 +1,8 @@
-import enum
-
-from sqlalchemy import Column, Enum, ForeignKey, Integer
+from sqlalchemy import Column, Enum, ForeignKey, Integer, UniqueConstraint
 from sqlalchemy.orm import relationship
 
+from data_models.participants import Role
 from database_schemas.base import Base
-
-
-class Role(enum.Enum):
-    member = "MEMBER"
-    owner = "OWNER"
-    admin = "ADMIN"
-    announcer = "ANNOUNCER"
 
 
 class ParticipantEntry(Base):
@@ -23,3 +15,5 @@ class ParticipantEntry(Base):
 
     user = relationship("UserEntry", back_populates="rooms")
     room = relationship("RoomEntry", back_populates="users")
+
+    UniqueConstraint(user_id, room_id)
