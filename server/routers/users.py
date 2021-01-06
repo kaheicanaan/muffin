@@ -20,7 +20,7 @@ def create_new_user(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered."
         ) from e
-    return new_user
+    return User.from_orm(new_user)
 
 
 @router.get("/{user_email}", response_model=User)
@@ -30,4 +30,4 @@ def read_user(user_email: EmailStr, user_profile: UserProfile = Depends()):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found."
         )
-    return user
+    return User.from_orm(user)
