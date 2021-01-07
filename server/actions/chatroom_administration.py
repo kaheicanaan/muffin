@@ -1,12 +1,16 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from actions.user_profile import UserProfile, UserNotFoundException
+from actions.user_profile import UserProfile
 from data_models.rooms import RoomType
 from database_schemas.db_session import db_session
 from database_schemas.participants import ParticipantEntry
 from database_schemas.participants import Role
 from database_schemas.rooms import RoomEntry
+
+
+class ChatroomAlreadyExistsException(Exception):
+    pass
 
 
 class ChatroomAdministration(object):
@@ -19,22 +23,22 @@ class ChatroomAdministration(object):
     def create_chatroom(self, my_user_id: int, their_user_id: int) -> RoomEntry:
         # ensure users exist
         me = self.user_profile.find_by_id(my_user_id)
-        if me is None:
-            raise UserNotFoundException(user_id=my_user_id)
         they = self.user_profile.find_by_id(their_user_id)
-        if they is None:
-            raise UserNotFoundException(user_id=their_user_id)
 
-        # TODO: ensure chatroom does not exist
+        # TODO: ensure chatroom does not exist (not working right now)
+        my_chatroom_ids = {
+            room.id for room in me.rooms if room.type is RoomType.chatroom
+        }
+        they_chatroom_ids = {
+            room.id for room in they.rooms if room.type is RoomType.chatroom
+        }
+        if my_chatroom_ids & they_chatroom_ids:
+            raise ChatroomAlreadyExistsException()
 
         chatroom_entry = RoomEntry(
             type=RoomType.chatroom,
             name="{user_name}",  # placeholder
         )
-        # self.db.add(chatroom_entry)
-        # self.db.commit()
-        # self.db.refresh(chatroom_entry)
-        # room_id = chatroom_entry.id
 
         my_participant_entry = ParticipantEntry(
             user=me,
