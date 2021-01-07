@@ -19,5 +19,8 @@ if [[ ! -z "${commit_py_files}" ]]; then
   # Run pylint.
   echo "Running pylint ..."
   pylint "${commit_py_files_array[@]}"
+
+  # Add files again.
+  git add "${commit_py_files_array[@]}"
 fi
 
