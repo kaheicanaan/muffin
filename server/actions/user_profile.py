@@ -1,5 +1,3 @@
-from typing import Optional
-
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
@@ -18,10 +16,14 @@ class UserProfile(object):
     def __init__(self, db: Session = Depends(db_session)):
         self.db = db
 
-    # pylint: disable=unsubscriptable-object
-    def find_by_id(self, user_id: int) -> Optional[UserEntry]:
-        return self.db.query(UserEntry).filter(UserEntry.id == user_id).first()
+    def find_by_id(self, user_id: int) -> UserEntry:
+        user_entry = self.db.query(UserEntry).filter(UserEntry.id == user_id).first()
+        if user_entry is None:
+            raise UserNotFoundException(user_id=user_id)
+        return user_entry
 
-    # pylint: disable=unsubscriptable-object
-    def find_by_email(self, email: str) -> Optional[UserEntry]:
-        return self.db.query(UserEntry).filter(UserEntry.email == email).first()
+    def find_by_email(self, email: str) -> UserEntry:
+        user_entry = self.db.query(UserEntry).filter(UserEntry.email == email).first()
+        if user_entry is None:
+            raise UserNotFoundException(user_email=email)
+        return user_entry
