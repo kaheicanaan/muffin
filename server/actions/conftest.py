@@ -1,5 +1,6 @@
 import pytest
 
+from actions.chatroom_administration import ChatroomAdministration
 from actions.user_profile import UserProfile
 from actions.user_registration import UserRegistration
 from data_models.users import UserCreate
@@ -8,6 +9,9 @@ from database_schemas.db_session import sqlite_db_session, test_engine
 
 
 # DB Session
+from database_schemas.users import UserEntry
+
+
 @pytest.fixture(name="db")
 def fixture_db():
     Base.metadata.drop_all(test_engine)
@@ -26,12 +30,27 @@ def fixture_user_registration(db, user_profile) -> UserRegistration:
     return UserRegistration(db, user_profile)
 
 
+@pytest.fixture(name="chatroom_administration")
+def fixture_chatroom_administration(db, user_profile) -> ChatroomAdministration:
+    return ChatroomAdministration(db, user_profile)
+
+
 # Dummy Users
-@pytest.fixture(name="user_squirtle")
-def fixture_user_squirtle() -> UserCreate:
+@pytest.fixture(name="user_create_squirtle")
+def fixture_user_create_squirtle() -> UserCreate:
     return UserCreate(**{"email": "squirtle@example.com", "password": "password"})
 
 
-@pytest.fixture(name="user_zenigame")
-def fixture_user_zenigame() -> UserCreate:
+@pytest.fixture(name="user_create_zenigame")
+def fixture_user_create_zenigame() -> UserCreate:
     return UserCreate(**{"email": "zenigame@example.com", "password": "Password"})
+
+
+@pytest.fixture(name="user_entry_squirtle")
+def fixture_user_entry_squirtle(user_registration, user_create_squirtle) -> UserEntry:
+    return user_registration.create_user(user_create_squirtle)
+
+
+@pytest.fixture(name="user_entry_zenigame")
+def fixture_user_entry_zenigame(user_registration, user_create_zenigame) -> UserEntry:
+    return user_registration.create_user(user_create_zenigame)
