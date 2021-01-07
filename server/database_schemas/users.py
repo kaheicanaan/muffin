@@ -12,4 +12,4 @@ class UserEntry(Base):
     hashed_password = Column(LargeBinary)
     is_active = Column(Boolean, default=True)
 
-    rooms = relationship("ParticipantEntry", back_populates="user")
+    rooms = relationship("RoomEntry", secondary="participants", back_populates="users")

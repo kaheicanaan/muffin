@@ -17,4 +17,4 @@ class RoomEntry(Base):
     created_time = Column(DateTime, default=datetime.utcnow)
     is_active = Column(Boolean, default=True)
 
-    users = relationship("ParticipantEntry", back_populates="room")
+    users = relationship("UserEntry", secondary="participants", back_populates="rooms")

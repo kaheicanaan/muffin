@@ -13,7 +13,7 @@ class ParticipantEntry(Base):
     room_id = Column(Integer, ForeignKey("rooms.id"), index=True)
     role = Column(Enum(Role), nullable=False)
 
-    user = relationship("UserEntry", back_populates="rooms")
-    room = relationship("RoomEntry", back_populates="users")
+    user = relationship("UserEntry")
+    room = relationship("RoomEntry")
 
     UniqueConstraint(user_id, room_id)
