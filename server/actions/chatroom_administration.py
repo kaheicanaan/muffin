@@ -25,7 +25,6 @@ class ChatroomAdministration(object):
         me = self.user_profile.find_by_id(my_user_id)
         they = self.user_profile.find_by_id(their_user_id)
 
-        # TODO: ensure chatroom does not exist (not working right now)
         my_chatroom_ids = {
             room.id for room in me.rooms if room.type is RoomType.chatroom
         }
