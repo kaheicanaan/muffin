@@ -11,7 +11,8 @@ class TestCreateChatroom(object):
     def test_new_chatroom(
         self,
         chatroom_administration: ChatroomAdministration,
-        user_entry_squirtle: UserEntry, user_entry_zenigame: UserEntry,
+        user_entry_squirtle: UserEntry,
+        user_entry_zenigame: UserEntry,
     ):
         new_chatroom = chatroom_administration.create_chatroom(
             user_entry_squirtle.id, user_entry_zenigame.id
