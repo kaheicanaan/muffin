@@ -20,7 +20,7 @@ class Room(BaseModel):
     type: RoomType
     name: str
     description: Optional[str]  # pylint: disable=unsubscriptable-object
-    created_time: datetime
+    created_at: datetime
     is_active: bool
 
     class Config:
