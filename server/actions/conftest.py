@@ -1,6 +1,7 @@
 import pytest
 
 from actions.chatroom_administration import ChatroomAdministration
+from actions.message_crud import MessageCRUD
 from actions.user_profile import UserProfile
 from actions.user_registration import UserRegistration
 from data_models.users import UserCreate
@@ -41,15 +42,15 @@ def fixture_chatroom_administration(db, user_profile) -> ChatroomAdministration:
     return ChatroomAdministration(db, user_profile)
 
 
+@pytest.fixture(name="message_crud")
+def fixture_message_crud(db, chatroom_administration) -> MessageCRUD:
+    return MessageCRUD(db, chatroom_administration)
+
+
 # Dummy Users
 @pytest.fixture(name="user_create_squirtle")
 def fixture_user_create_squirtle() -> UserCreate:
     return UserCreate(**{"email": "squirtle@example.com", "password": "password"})
-
-
-@pytest.fixture(name="user_create_zenigame")
-def fixture_user_create_zenigame() -> UserCreate:
-    return UserCreate(**{"email": "zenigame@example.com", "password": "Password"})
 
 
 @pytest.fixture(name="user_entry_squirtle")
@@ -57,6 +58,31 @@ def fixture_user_entry_squirtle(user_registration, user_create_squirtle) -> User
     return user_registration.create_user(user_create_squirtle)
 
 
+@pytest.fixture(name="user_create_zenigame")
+def fixture_user_create_zenigame() -> UserCreate:
+    return UserCreate(**{"email": "zenigame@example.com", "password": "Password"})
+
+
 @pytest.fixture(name="user_entry_zenigame")
 def fixture_user_entry_zenigame(user_registration, user_create_zenigame) -> UserEntry:
     return user_registration.create_user(user_create_zenigame)
+
+
+@pytest.fixture(name="user_create_pusheen")
+def fixture_user_create_pusheen() -> UserCreate:
+    return UserCreate(**{"email": "pusheen@example.com", "password": "pussword"})
+
+
+@pytest.fixture(name="user_entry_pusheen")
+def fixture_user_entry_pusheen(user_registration, user_create_pusheen) -> UserEntry:
+    return user_registration.create_user(user_create_pusheen)
+
+
+# Dummy Rooms
+@pytest.fixture(name="pokemon_chatroom")
+def fixture_pokemon_chatroom(
+    user_entry_squirtle, user_entry_zenigame, chatroom_administration
+):
+    return chatroom_administration.create_chatroom(
+        user_entry_squirtle.id, user_entry_zenigame.id
+    )
