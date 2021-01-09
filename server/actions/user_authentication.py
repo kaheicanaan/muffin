@@ -9,7 +9,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from pydantic import EmailStr
 
-from actions.user_profile import UserProfile
+from actions.user_profile import UserProfile, UserNotFoundException
 from data_models.access_token import UserToken
 from database_schemas.users import UserEntry
 
@@ -43,12 +43,13 @@ class UserAuthentication(object):
     def __init__(self, user_profile: UserProfile = Depends()):
         self.user_profile = user_profile
 
-    def login(self, email: EmailStr, password: str) -> str:
-        user_entry = self.user_profile.find_by_email(email)
-        if user_entry is None:
-            raise InvalidCredentialsException()
-        if not check_password(password, user_entry.hashed_password):
-            raise InvalidCredentialsException()
+    def login(self, email: EmailStr, password: str) -> UserToken:
+        try:
+            user_entry = self.user_profile.find_by_email(email)
+            if not check_password(password, user_entry.hashed_password):
+                raise InvalidCredentialsException()
+        except UserNotFoundException as e:
+            raise InvalidCredentialsException() from e
         return UserToken(
             user_id=user_entry.id,
             exp=datetime.utcnow() + _ACCESS_TOKEN_EXPIRATION,
@@ -71,8 +72,11 @@ class UserAuthentication(object):
             user_token = UserToken(**payload)
         except JWTError as e:
             raise InvalidCredentialsException() from e
-        user_entry = self.user_profile.find_by_id(user_token.user_id)
-        if user_entry is None:
+        try:
+            user_entry = self.user_profile.find_by_id(user_token.user_id)
+            if user_entry is None:
+                raise InvalidCredentialsException() from e
+        except UserNotFoundException as e:
             raise InvalidCredentialsException() from e
         return user_entry
 
