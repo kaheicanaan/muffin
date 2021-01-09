@@ -7,9 +7,14 @@ from database_schemas.db_session import db_session
 from database_schemas.participants import ParticipantEntry
 from database_schemas.participants import Role
 from database_schemas.rooms import RoomEntry
+from database_schemas.users import UserEntry
 
 
 class ChatroomAlreadyExistsException(Exception):
+    pass
+
+
+class ParticipantNotFoundException(Exception):
     pass
 
 
@@ -52,3 +57,13 @@ class ChatroomAdministration(object):
         self.db.add_all([chatroom_entry, my_participant_entry, their_participant_entry])
         self.db.commit()
         return chatroom_entry
+
+    def get_user_role(self, room_id: int, user_id: int) -> Role:
+        participant: ParticipantEntry = (
+            self.db.query(ParticipantEntry)
+            .filter(RoomEntry.id == room_id, UserEntry.id == user_id)
+            .first()
+        )
+        if participant is None:
+            raise ParticipantNotFoundException()
+        return participant.role
