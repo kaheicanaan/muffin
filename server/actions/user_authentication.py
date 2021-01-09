@@ -45,7 +45,7 @@ class UserAuthentication(object):
 
     def login(self, email: EmailStr, password: str) -> UserToken:
         try:
-            user_entry = self.user_profile.find_by_email(email)
+            user_entry = self.user_profile.get_by_email(email)
             if not check_password(password, user_entry.hashed_password):
                 raise InvalidCredentialsException()
         except UserNotFoundException as e:
@@ -73,9 +73,7 @@ class UserAuthentication(object):
         except JWTError as e:
             raise InvalidCredentialsException() from e
         try:
-            user_entry = self.user_profile.find_by_id(user_token.user_id)
-            if user_entry is None:
-                raise InvalidCredentialsException() from e
+            user_entry = self.user_profile.get_by_id(user_token.user_id)
         except UserNotFoundException as e:
             raise InvalidCredentialsException() from e
         return user_entry
