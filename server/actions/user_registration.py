@@ -2,7 +2,7 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from actions.user_authentication import hash_password
-from actions.user_profile import UserProfile, UserNotFoundException
+from actions.user_profile import UserProfile
 from data_models.users import UserCreate
 from database_schemas.db_session import db_session
 from database_schemas.users import UserEntry
@@ -21,11 +21,7 @@ class UserRegistration(object):
 
     def create_user(self, user: UserCreate) -> UserEntry:
         # ensure user does not exist
-        try:
-            self.user_profile.find_by_email(user.email)
-        except UserNotFoundException:
-            pass
-        else:
+        if self.user_profile.find_by_email(user.email):
             raise UserAlreadyExistsException()
 
         hashed_password = hash_password(user.password)

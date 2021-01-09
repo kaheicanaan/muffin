@@ -22,8 +22,8 @@ class ChatroomAdministration(object):
 
     def create_chatroom(self, my_user_id: int, their_user_id: int) -> RoomEntry:
         # ensure users exist
-        me = self.user_profile.find_by_id(my_user_id)
-        they = self.user_profile.find_by_id(their_user_id)
+        me = self.user_profile.get_by_id(my_user_id)
+        they = self.user_profile.get_by_id(their_user_id)
 
         my_chatroom_ids = {
             room.id for room in me.rooms if room.type is RoomType.chatroom
