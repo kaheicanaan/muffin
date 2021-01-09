@@ -13,12 +13,8 @@ from actions.user_profile import UserProfile
 from data_models.access_token import UserToken
 from database_schemas.users import UserEntry
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+OAUTH2_SCHEME = OAuth2PasswordBearer(tokenUrl="login")
 
-
-_USER_PASSWORD_SECRET = os.getenv("USER_PASSWORD_SECRET", "")
-
-_ACCESS_TOKEN_SIGNATURE = os.getenv("ACCESS_TOKEN_SIGNATURE", "")
 _ACCESS_TOKEN_ALGORITHM = jwt.ALGORITHMS.HS256
 _ACCESS_TOKEN_EXPIRATION = timedelta(minutes=30)
 
@@ -29,7 +25,9 @@ class InvalidCredentialsException(Exception):
 
 def _pepper(raw_password: str) -> bytes:
     return base64.b64encode(
-        hashlib.sha256((raw_password + _USER_PASSWORD_SECRET).encode("utf-8")).digest()
+        hashlib.sha256(
+            (raw_password + os.getenv("USER_PASSWORD_SECRET")).encode("utf-8")
+        ).digest()
     )
 
 
@@ -58,13 +56,17 @@ class UserAuthentication(object):
 
     def sign_token(self, data: dict) -> str:
         return jwt.encode(
-            data, _ACCESS_TOKEN_SIGNATURE, algorithm=_ACCESS_TOKEN_ALGORITHM
+            data,
+            os.getenv("ACCESS_TOKEN_SIGNATURE"),
+            algorithm=_ACCESS_TOKEN_ALGORITHM,
         )
 
     def get_authorized_user(self, token: str) -> UserEntry:
         try:
             payload = jwt.decode(
-                token, _ACCESS_TOKEN_SIGNATURE, algorithms=[_ACCESS_TOKEN_ALGORITHM]
+                token,
+                os.getenv("ACCESS_TOKEN_SIGNATURE"),
+                algorithms=[_ACCESS_TOKEN_ALGORITHM],
             )
             user_token = UserToken(**payload)
         except JWTError as e:
@@ -76,7 +78,7 @@ class UserAuthentication(object):
 
 
 def get_authorized_user(
-    token: str = Depends(oauth2_scheme),
+    token: str = Depends(OAUTH2_SCHEME),
     user_authentication: UserAuthentication = Depends(),
 ) -> UserEntry:
     return user_authentication.get_authorized_user(token)
