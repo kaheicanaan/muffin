@@ -12,6 +12,12 @@ from database_schemas.db_session import sqlite_db_session, test_engine
 from database_schemas.users import UserEntry
 
 
+@pytest.fixture(autouse=True)
+def set_env(monkeypatch):
+    monkeypatch.setenv("ACCESS_TOKEN_SIGNATURE", "SIGN")
+    monkeypatch.setenv("USER_PASSWORD_SECRET", "SECRET")
+
+
 @pytest.fixture(name="db")
 def fixture_db():
     Base.metadata.drop_all(test_engine)

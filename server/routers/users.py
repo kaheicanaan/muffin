@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import EmailStr
 
 
+from actions.user_authentication import get_authorized_user
 from actions.user_profile import UserProfile
 from actions.user_registration import UserRegistration, UserAlreadyExistsException
 from data_models.users import UserCreate, User
@@ -23,7 +24,9 @@ def create_new_user(
     return User.from_orm(new_user)
 
 
-@router.get("/{user_email}", response_model=User)
+@router.get(
+    "/{user_email}", dependencies=[Depends(get_authorized_user)], response_model=User
+)
 def read_user(user_email: EmailStr, user_profile: UserProfile = Depends()):
     user = user_profile.find_by_email(email=user_email)
     if user is None:

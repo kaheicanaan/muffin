@@ -1,25 +1,14 @@
 services:
   postgres:
     image: postgres
-    environment:
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
-      - POSTGRES_DB
+    env_file:
+      - .env.dev
     ports:
       - "5432:5432"
   server:
     build: .
-    environment:
-      # Local preference.
-      - PYTHONPYCACHEPREFIX=.pycache
-      # Postgres database.
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
-      - POSTGRES_DB
-      - POSTGRES_HOST=postgres
-      - POSTGRES_PORT=5432
-      # User authentication.
-      - USER_PASSWORD_SECRET
+    env_file:
+      - .env.dev
     ports:
       - "8000:8000"
     volumes:
