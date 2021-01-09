@@ -5,8 +5,8 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Integer,
+    String,
     UniqueConstraint,
-    LargeBinary,
 )
 
 from database_schemas.base import Base
@@ -17,10 +17,10 @@ class MessageEntry(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     room_id = Column(Integer, ForeignKey("rooms.id"))
-    created_at = Column(DateTime, default=datetime)
+    created_at = Column(DateTime, default=datetime.utcnow)
     user_id = Column(Integer, ForeignKey("users.id"))
-    encrypted_message = Column(LargeBinary, nullable=False)
-    last_updated_at = Column(DateTime, default=datetime)
-    deleted_at = Column(DateTime, default=datetime)
+    encrypted_message = Column(String, nullable=False)
+    last_updated_at = Column(DateTime)
+    deleted_at = Column(DateTime)
 
     UniqueConstraint(room_id, created_at)
