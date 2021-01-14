@@ -1,7 +1,7 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from actions.chatroom_administration import ChatroomAdministration
+from actions.internal.chatroom_administration import ChatroomAdministration
 from data_models.rooms import RoomType
 from database_schemas.db_session import db_session
 from database_schemas.messages import MessageEntry

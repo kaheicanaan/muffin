@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from actions.chatroom_administration import (
+from actions.internal.chatroom_administration import (
     ChatroomAdministration,
     ChatroomAlreadyExistsException,
 )
-from actions.user_profile import UserNotFoundException
+from actions.internal.user_profile import UserNotFoundException
 from data_models.rooms import Room
 
 router = APIRouter()

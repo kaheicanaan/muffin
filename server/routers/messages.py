@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from actions.chatroom_administration import (
+from actions.internal.chatroom_administration import (
     RoomNotFoundException,
     ParticipantNotFoundException,
 )
-from actions.message_crud import MessageCRUD, NoMessageCreationAccessException
+from actions.internal.message_crud import MessageCRUD, NoMessageCreationAccessException
 from data_models.messages import Message
 
 router = APIRouter()

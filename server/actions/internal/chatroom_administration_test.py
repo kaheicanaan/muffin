@@ -1,6 +1,6 @@
 import pytest
 
-from actions.chatroom_administration import (
+from actions.internal.chatroom_administration import (
     ChatroomAdministration,
     ChatroomAlreadyExistsException,
 )

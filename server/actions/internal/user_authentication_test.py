@@ -1,7 +1,10 @@
 from datetime import datetime, timedelta
 import pytest
 
-from actions.user_authentication import UserAuthentication, InvalidCredentialsException
+from actions.internal.user_authentication import (
+    UserAuthentication,
+    InvalidCredentialsException,
+)
 from database_schemas.users import UserEntry
 from data_models.access_token import UserToken
 

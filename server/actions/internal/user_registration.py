@@ -1,8 +1,8 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from actions.user_authentication import hash_password
-from actions.user_profile import UserProfile
+from actions.internal.user_authentication import hash_password
+from actions.internal.user_profile import UserProfile
 from data_models.users import UserCreate
 from database_schemas.db_session import db_session
 from database_schemas.users import UserEntry
