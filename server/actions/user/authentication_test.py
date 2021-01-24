@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import pytest
 
-from actions.internal.user_authentication import (
+from actions.user.authentication import (
     UserAuthentication,
     InvalidCredentialsException,
 )

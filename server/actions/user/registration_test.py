@@ -1,6 +1,6 @@
 import pytest
 
-from actions.internal.user_registration import (
+from actions.user.registration import (
     UserRegistration,
     UserAlreadyExistsException,
 )

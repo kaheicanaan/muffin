@@ -3,7 +3,7 @@ import pytest
 from actions.internal.chatroom_administration import ChatroomAdministration
 from actions.internal.message_crud import MessageCRUD
 from actions.internal.user_profile import UserProfile
-from actions.internal.user_registration import UserRegistration
+from actions.user.registration import UserRegistration
 from data_models.users import UserCreate
 from database_schemas.base import Base
 from database_schemas.db_session import sqlite_db_session, test_engine

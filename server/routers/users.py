@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import EmailStr
 
 
-from actions.internal.user_authentication import get_authorized_user
+from actions.user.authentication import get_authorized_user
 from actions.internal.user_profile import UserProfile
-from actions.internal.user_registration import (
+from actions.user.registration import (
     UserRegistration,
     UserAlreadyExistsException,
 )
