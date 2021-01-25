@@ -80,6 +80,6 @@ def fixture_user_entry_pusheen(user_registration, user_create_pusheen) -> UserEn
 def fixture_pokemon_chatroom(
     user_entry_squirtle, user_entry_zenigame, chatroom_administration
 ):
-    return chatroom_administration.create_chatroom(
+    return chatroom_administration.create_room(
         user_entry_squirtle.id, user_entry_zenigame.id
     )

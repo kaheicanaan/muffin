@@ -17,7 +17,7 @@ def create_chatroom(
     chatroom_admin: ChatroomAdministration = Depends(),
 ):
     try:
-        new_chatroom = chatroom_admin.create_chatroom(user_id_1, user_id_2)
+        new_chatroom = chatroom_admin.create_room(user_id_1, user_id_2)
     except UserNotFoundException as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

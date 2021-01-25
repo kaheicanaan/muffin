@@ -1,6 +1,6 @@
 import pytest
 
-from actions.internal.chatroom_administration import (
+from actions.internal.base_room_administration import (
     RoomNotFoundException,
     ParticipantNotFoundException,
 )

@@ -33,12 +33,13 @@ class MessageCRUD(object):
     def create_message(
         self, user_id: int, room_id: int, encrypted_message: str
     ) -> MessageEntry:
-        # check user access right to create message
-        room = self.chatroom_administration.get_room(room_id)
+        # check user access right before create message
+        room = self.chatroom_administration.get_room_by_id(room_id)
         role = self.chatroom_administration.get_user_role(room_id, user_id)
         if role not in SEND_MESSAGE_ACCESS_CONTROL[room.type]:
             raise NoMessageCreationAccessException(user_id, room_id, role)
 
+        # create message record
         message_entry = MessageEntry(
             room_id=room_id, user_id=user_id, encrypted_message=encrypted_message
         )
