@@ -5,19 +5,21 @@ from actions.internal.chatroom_administration import (
     ChatroomAlreadyExistsException,
 )
 from actions.internal.user_profile import UserNotFoundException
+from actions.user.authentication import get_authorized_user
 from data_models.rooms import Room
+from database_schemas.users import UserEntry
 
 router = APIRouter()
 
 
 @router.post("/", response_model=Room)
 def create_chatroom(
-    user_id_1: int,
-    user_id_2: int,
+    other_user_id: int,  # TODO: change to username
+    user: UserEntry = Depends(get_authorized_user),
     chatroom_admin: ChatroomAdministration = Depends(),
 ):
     try:
-        new_chatroom = chatroom_admin.create_room(user_id_1, user_id_2)
+        new_chatroom = chatroom_admin.create_room(user.id, other_user_id)
     except UserNotFoundException as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

@@ -13,7 +13,7 @@ router = APIRouter()
 def login_user(
     form_data: OAuth2PasswordRequestForm = Depends(),
     user_authentication: UserAuthentication = Depends(),
-) -> str:
+) -> dict:
     try:
         user_token = user_authentication.login(
             email=form_data.username, password=form_data.password
