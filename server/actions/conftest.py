@@ -1,5 +1,6 @@
 import pytest
 
+from actions.internal.base_room_administration import RoomAdministration
 from actions.internal.chatroom_administration import ChatroomAdministration
 from actions.internal.message_crud import MessageCRUD
 from actions.internal.user_profile import UserProfile
@@ -34,14 +35,19 @@ def fixture_user_registration(db, user_profile) -> UserRegistration:
     return UserRegistration(db, user_profile)
 
 
+@pytest.fixture(name="room_administration")
+def fixture_room_administration(db) -> RoomAdministration:
+    return ChatroomAdministration(db)
+
+
 @pytest.fixture(name="chatroom_administration")
 def fixture_chatroom_administration(db, user_profile) -> ChatroomAdministration:
     return ChatroomAdministration(db, user_profile)
 
 
 @pytest.fixture(name="message_crud")
-def fixture_message_crud(db, chatroom_administration) -> MessageCRUD:
-    return MessageCRUD(db, chatroom_administration)
+def fixture_message_crud(db, room_administration) -> MessageCRUD:
+    return MessageCRUD(db, room_administration)
 
 
 # Dummy Users
