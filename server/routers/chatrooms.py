@@ -4,7 +4,7 @@ from actions.internal.chatroom_administration import (
     ChatroomAdministration,
     ChatroomAlreadyExistsException,
 )
-from actions.internal.user_profile import UserNotFoundException
+from actions.user.profile import UserNotFoundException
 from actions.user.authentication import get_authorized_user
 from data_models.rooms import Room
 from database_schemas.users import UserEntry

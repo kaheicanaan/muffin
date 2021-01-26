@@ -9,7 +9,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from pydantic import EmailStr
 
-from actions.internal.user_profile import UserProfile, UserNotFoundException
+from actions.user.profile import UserProfile, UserNotFoundException
 from data_models.access_token import UserToken
 from database_schemas.users import UserEntry
 
