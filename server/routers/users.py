@@ -3,7 +3,7 @@ from pydantic import EmailStr
 
 
 from actions.user.authentication import get_authorized_user
-from actions.internal.user_profile import UserProfile
+from actions.user.profile import UserProfile
 from actions.user.registration import (
     UserRegistration,
     UserAlreadyExistsException,

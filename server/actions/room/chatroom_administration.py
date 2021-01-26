@@ -1,8 +1,8 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from actions.internal.base_room_administration import RoomAdministration
-from actions.internal.user_profile import UserProfile
+from actions.room.base_room_administration import RoomAdministration
+from actions.user.profile import UserProfile
 from data_models.rooms import RoomType
 from database_schemas.db_session import db_session
 from database_schemas.participants import ParticipantEntry
