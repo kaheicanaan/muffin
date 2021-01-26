@@ -1,14 +1,12 @@
-import base64
-import hashlib
 import os
 from datetime import datetime, timedelta
 
-import bcrypt
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from pydantic import EmailStr
 
+from actions import utils
 from actions.user.profile import UserProfile, UserNotFoundException
 from data_models.access_token import UserToken
 from database_schemas.users import UserEntry
@@ -23,22 +21,6 @@ class InvalidCredentialsException(Exception):
     pass
 
 
-def _pepper(raw_password: str) -> bytes:
-    return base64.b64encode(
-        hashlib.sha256(
-            (raw_password + os.getenv("USER_PASSWORD_SECRET")).encode("utf-8")
-        ).digest()
-    )
-
-
-def hash_password(raw_password: str) -> bytes:
-    return bcrypt.hashpw(_pepper(raw_password), bcrypt.gensalt())
-
-
-def check_password(raw_password: str, hashed_password: bytes) -> bool:
-    return bcrypt.checkpw(_pepper(raw_password), hashed_password)
-
-
 class UserAuthentication(object):
     def __init__(self, user_profile: UserProfile = Depends()):
         self.user_profile = user_profile
@@ -46,7 +28,7 @@ class UserAuthentication(object):
     def login(self, email: EmailStr, password: str) -> UserToken:
         try:
             user_entry = self.user_profile.get_by_email(email)
-            if not check_password(password, user_entry.hashed_password):
+            if not utils.password.check_password(password, user_entry.hashed_password):
                 raise InvalidCredentialsException()
         except UserNotFoundException as e:
             raise InvalidCredentialsException() from e

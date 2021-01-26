@@ -1,7 +1,7 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from actions.user.authentication import hash_password
+from actions import utils
 from actions.user.profile import UserProfile
 from data_models.users import UserCreate
 from database_schemas.db_session import db_session
@@ -24,7 +24,7 @@ class UserRegistration(object):
         if self.user_profile.find_by_email(user.email):
             raise UserAlreadyExistsException()
 
-        hashed_password = hash_password(user.password)
+        hashed_password = utils.password.hash_password(user.password)
         user_entry = UserEntry(email=user.email, hashed_password=hashed_password)
         self.db.add(user_entry)
         self.db.commit()
