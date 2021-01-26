@@ -1,15 +1,13 @@
 import pytest
 
-from actions.chatroom_administration import ChatroomAdministration
-from actions.message_crud import MessageCRUD
-from actions.user_profile import UserProfile
-from actions.user_registration import UserRegistration
+from actions.internal.base_room_administration import RoomAdministration
+from actions.internal.chatroom_administration import ChatroomAdministration
+from actions.internal.message_crud import MessageCRUD
+from actions.internal.user_profile import UserProfile
+from actions.user.registration import UserRegistration
 from data_models.users import UserCreate
 from database_schemas.base import Base
 from database_schemas.db_session import sqlite_db_session, test_engine
-
-
-# DB Session
 from database_schemas.users import UserEntry
 
 
@@ -37,14 +35,19 @@ def fixture_user_registration(db, user_profile) -> UserRegistration:
     return UserRegistration(db, user_profile)
 
 
+@pytest.fixture(name="room_administration")
+def fixture_room_administration(db) -> RoomAdministration:
+    return ChatroomAdministration(db)
+
+
 @pytest.fixture(name="chatroom_administration")
 def fixture_chatroom_administration(db, user_profile) -> ChatroomAdministration:
     return ChatroomAdministration(db, user_profile)
 
 
 @pytest.fixture(name="message_crud")
-def fixture_message_crud(db, chatroom_administration) -> MessageCRUD:
-    return MessageCRUD(db, chatroom_administration)
+def fixture_message_crud(db, room_administration) -> MessageCRUD:
+    return MessageCRUD(db, room_administration)
 
 
 # Dummy Users
@@ -83,6 +86,6 @@ def fixture_user_entry_pusheen(user_registration, user_create_pusheen) -> UserEn
 def fixture_pokemon_chatroom(
     user_entry_squirtle, user_entry_zenigame, chatroom_administration
 ):
-    return chatroom_administration.create_chatroom(
+    return chatroom_administration.create_room(
         user_entry_squirtle.id, user_entry_zenigame.id
     )

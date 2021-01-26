@@ -1,10 +1,10 @@
 import pytest
 
-from actions.chatroom_administration import (
+from actions.internal.base_room_administration import (
     RoomNotFoundException,
     ParticipantNotFoundException,
 )
-from actions.message_crud import MessageCRUD
+from actions.internal.message_crud import MessageCRUD
 from database_schemas.rooms import RoomEntry
 from database_schemas.users import UserEntry
 

@@ -1,7 +1,7 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from actions.chatroom_administration import ChatroomAdministration
+from actions.internal.base_room_administration import RoomAdministration
 from data_models.rooms import RoomType
 from database_schemas.db_session import db_session
 from database_schemas.messages import MessageEntry
@@ -25,20 +25,21 @@ class MessageCRUD(object):
     def __init__(
         self,
         db: Session = Depends(db_session),
-        chatroom_administration: ChatroomAdministration = Depends(),
+        room_administration: RoomAdministration = Depends(),
     ):
         self.db = db
-        self.chatroom_administration = chatroom_administration
+        self.room_administration = room_administration
 
     def create_message(
         self, user_id: int, room_id: int, encrypted_message: str
     ) -> MessageEntry:
-        # check user access right to create message
-        room = self.chatroom_administration.get_room(room_id)
-        role = self.chatroom_administration.get_user_role(room_id, user_id)
+        # check user access right before create message
+        room = self.room_administration.get_room_by_id(room_id)
+        role = self.room_administration.get_user_role(room_id, user_id)
         if role not in SEND_MESSAGE_ACCESS_CONTROL[room.type]:
             raise NoMessageCreationAccessException(user_id, room_id, role)
 
+        # create message record
         message_entry = MessageEntry(
             room_id=room_id, user_id=user_id, encrypted_message=encrypted_message
         )

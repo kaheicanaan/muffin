@@ -1,7 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
-from actions.user_authentication import UserAuthentication, InvalidCredentialsException
+from actions.user.authentication import (
+    UserAuthentication,
+    InvalidCredentialsException,
+)
 
 router = APIRouter()
 
@@ -10,7 +13,7 @@ router = APIRouter()
 def login_user(
     form_data: OAuth2PasswordRequestForm = Depends(),
     user_authentication: UserAuthentication = Depends(),
-) -> str:
+) -> dict:
     try:
         user_token = user_authentication.login(
             email=form_data.username, password=form_data.password

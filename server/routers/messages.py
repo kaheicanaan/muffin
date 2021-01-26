@@ -1,24 +1,26 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from actions.chatroom_administration import (
+from actions.internal.base_room_administration import (
     RoomNotFoundException,
     ParticipantNotFoundException,
 )
-from actions.message_crud import MessageCRUD, NoMessageCreationAccessException
+from actions.internal.message_crud import MessageCRUD, NoMessageCreationAccessException
+from actions.user.authentication import get_authorized_user
 from data_models.messages import Message
+from database_schemas.users import UserEntry
 
 router = APIRouter()
 
 
 @router.post("/", response_model=Message)
 def create_message(
-    user_id: int,
     room_id: int,
     encrypted_message: str,
+    user: UserEntry = Depends(get_authorized_user),
     message_crud: MessageCRUD = Depends(),
 ):
     try:
-        new_message = message_crud.create_message(user_id, room_id, encrypted_message)
+        new_message = message_crud.create_message(user.id, room_id, encrypted_message)
     except RoomNotFoundException as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

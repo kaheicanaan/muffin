@@ -1,6 +1,6 @@
 import pytest
 
-from actions.chatroom_administration import (
+from actions.internal.chatroom_administration import (
     ChatroomAdministration,
     ChatroomAlreadyExistsException,
 )
@@ -14,7 +14,7 @@ class TestCreateChatroom(object):
         user_entry_squirtle: UserEntry,
         user_entry_zenigame: UserEntry,
     ):
-        new_chatroom = chatroom_administration.create_chatroom(
+        new_chatroom = chatroom_administration.create_room(
             user_entry_squirtle.id, user_entry_zenigame.id
         )
         assert isinstance(new_chatroom.id, int)
@@ -25,11 +25,11 @@ class TestCreateChatroom(object):
         user_entry_squirtle: UserEntry,
         user_entry_zenigame: UserEntry,
     ):
-        new_chatroom = chatroom_administration.create_chatroom(
+        new_chatroom = chatroom_administration.create_room(
             user_entry_squirtle.id, user_entry_zenigame.id
         )
         assert isinstance(new_chatroom.id, int)
         with pytest.raises(ChatroomAlreadyExistsException):
-            chatroom_administration.create_chatroom(
+            chatroom_administration.create_room(
                 user_entry_squirtle.id, user_entry_zenigame.id
             )

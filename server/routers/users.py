@@ -2,9 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import EmailStr
 
 
-from actions.user_authentication import get_authorized_user
-from actions.user_profile import UserProfile
-from actions.user_registration import UserRegistration, UserAlreadyExistsException
+from actions.user.authentication import get_authorized_user
+from actions.internal.user_profile import UserProfile
+from actions.user.registration import (
+    UserRegistration,
+    UserAlreadyExistsException,
+)
 from data_models.users import UserCreate, User
 
 router = APIRouter()

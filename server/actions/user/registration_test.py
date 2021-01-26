@@ -1,6 +1,9 @@
 import pytest
 
-from actions.user_registration import UserRegistration, UserAlreadyExistsException
+from actions.user.registration import (
+    UserRegistration,
+    UserAlreadyExistsException,
+)
 from data_models.users import UserCreate
 
 
