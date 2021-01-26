@@ -1,8 +1,8 @@
 import pytest
 
-from actions.internal.base_room_administration import RoomAdministration
-from actions.internal.chatroom_administration import ChatroomAdministration
-from actions.internal.message_crud import MessageCRUD
+from actions.room.base_room_administration import RoomAdministration
+from actions.room.chatroom_administration import ChatroomAdministration
+from actions.room.message_crud import MessageCRUD
 from actions.user.profile import UserProfile
 from actions.user.registration import UserRegistration
 from data_models.users import UserCreate

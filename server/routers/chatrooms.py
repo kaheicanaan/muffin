@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from actions.internal.chatroom_administration import (
+from actions.room.chatroom_administration import (
     ChatroomAdministration,
     ChatroomAlreadyExistsException,
 )
