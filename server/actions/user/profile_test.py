@@ -10,13 +10,22 @@ from database_schemas.users import UserEntry
 
 
 class TestGetProfile(object):
-    def test_get_existing_user_by_id(
+    def test_get_existing_user(
         self,
         user_profile: UserProfile,
         user_entry_squirtle: UserEntry,
     ):
-        squirtle = user_profile.get_by_id(user_entry_squirtle.id)
-        assert user_entry_squirtle == squirtle
+        squirtle_by_id = user_profile.get_by_id(user_entry_squirtle.id)
+        squirtle_by_username = user_profile.get_by_username(
+            user_entry_squirtle.username
+        )
+        squirtle_by_email = user_profile.get_by_email(user_entry_squirtle.email)
+        assert (
+            user_entry_squirtle
+            == squirtle_by_id
+            == squirtle_by_username
+            == squirtle_by_email
+        )
 
     def test_get_user_by_non_exist_id(
         self,
@@ -24,6 +33,10 @@ class TestGetProfile(object):
     ):
         with pytest.raises(UserNotFoundException):
             user_profile.get_by_id(4242)
+        with pytest.raises(UserNotFoundException):
+            user_profile.get_by_username("RandomUsername")
+        with pytest.raises(UserNotFoundException):
+            user_profile.get_by_email("no_such_email@example.com")
 
 
 class TestUpdateProfile(object):
