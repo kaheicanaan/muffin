@@ -2,7 +2,7 @@ import pytest
 
 from actions.user.registration import (
     UserRegistration,
-    UserAlreadyExistsException,
+    EmailAlreadyRegisteredException,
 )
 from data_models.users import UserCreate
 
@@ -19,5 +19,5 @@ class TestCreateUser(object):
     ):
         new_user = user_registration.create_user(user_create_squirtle)
         assert isinstance(new_user.id, int)
-        with pytest.raises(UserAlreadyExistsException):
+        with pytest.raises(EmailAlreadyRegisteredException):
             user_registration.create_user(user_create_squirtle)

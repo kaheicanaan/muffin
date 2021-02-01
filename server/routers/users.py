@@ -6,7 +6,7 @@ from actions.user.authentication import get_authorized_user
 from actions.user.profile import UserProfile
 from actions.user.registration import (
     UserRegistration,
-    UserAlreadyExistsException,
+    EmailAlreadyRegisteredException,
 )
 from data_models.users import UserCreate, User
 
@@ -20,7 +20,7 @@ def create_new_user(
 ):
     try:
         new_user = user_registration.create_user(user=user)
-    except UserAlreadyExistsException as e:
+    except EmailAlreadyRegisteredException as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered."
         ) from e
