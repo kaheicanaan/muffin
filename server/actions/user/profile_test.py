@@ -4,6 +4,7 @@ from actions.user.profile import (
     UserProfile,
     UserNotFoundException,
     EmailAlreadyUsedException,
+    UsernameAlreadyUsedException,
 )
 from database_schemas.users import UserEntry
 
@@ -26,6 +27,28 @@ class TestGetProfile(object):
 
 
 class TestUpdateProfile(object):
+    def test_update_username(
+        self,
+        user_profile: UserProfile,
+        user_entry_squirtle: UserEntry,
+    ):
+        old_username = user_entry_squirtle.username
+        new_username = "squirtle2"
+        _ = user_profile.update_username(user_entry_squirtle.id, new_username)
+        assert user_entry_squirtle.username != old_username
+        assert user_entry_squirtle.username == new_username
+
+    def test_update_existing_username(
+        self,
+        user_profile: UserProfile,
+        user_entry_squirtle: UserEntry,
+        user_entry_zenigame: UserEntry,
+    ):
+        with pytest.raises(UsernameAlreadyUsedException):
+            user_profile.update_username(
+                user_entry_squirtle.id, user_entry_zenigame.username
+            )
+
     def test_update_email(
         self,
         user_profile: UserProfile,

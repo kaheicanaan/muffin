@@ -53,7 +53,13 @@ def fixture_message_crud(db, room_administration) -> MessageCRUD:
 # Dummy Users
 @pytest.fixture(name="user_create_squirtle")
 def fixture_user_create_squirtle() -> UserCreate:
-    return UserCreate(**{"email": "squirtle@example.com", "password": "password"})
+    return UserCreate(
+        **{
+            "username": "squirtle",
+            "email": "squirtle@example.com",
+            "password": "password",
+        }
+    )
 
 
 @pytest.fixture(name="user_entry_squirtle")
@@ -63,7 +69,13 @@ def fixture_user_entry_squirtle(user_registration, user_create_squirtle) -> User
 
 @pytest.fixture(name="user_create_zenigame")
 def fixture_user_create_zenigame() -> UserCreate:
-    return UserCreate(**{"email": "zenigame@example.com", "password": "Password"})
+    return UserCreate(
+        **{
+            "username": "zenigame",
+            "email": "zenigame@example.com",
+            "password": "Password",
+        }
+    )
 
 
 @pytest.fixture(name="user_entry_zenigame")
@@ -73,7 +85,13 @@ def fixture_user_entry_zenigame(user_registration, user_create_zenigame) -> User
 
 @pytest.fixture(name="user_create_pusheen")
 def fixture_user_create_pusheen() -> UserCreate:
-    return UserCreate(**{"email": "pusheen@example.com", "password": "pussword"})
+    return UserCreate(
+        **{
+            "username": "pusheen",
+            "email": "pusheen@example.com",
+            "password": "pussword",
+        }
+    )
 
 
 @pytest.fixture(name="user_entry_pusheen")
