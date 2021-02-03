@@ -8,7 +8,11 @@ from database_schemas.db_session import db_session
 from database_schemas.users import UserEntry
 
 
-class UserAlreadyExistsException(Exception):
+class UsernameAlreadyRegisteredException(Exception):
+    pass
+
+
+class EmailAlreadyRegisteredException(Exception):
     pass
 
 
@@ -20,12 +24,16 @@ class UserRegistration(object):
         self.user_profile = user_profile
 
     def create_user(self, user: UserCreate) -> UserEntry:
-        # ensure user does not exist
+        # ensure username and email do not exist
+        if self.user_profile.find_by_username(user.username):
+            raise UsernameAlreadyRegisteredException()
         if self.user_profile.find_by_email(user.email):
-            raise UserAlreadyExistsException()
+            raise EmailAlreadyRegisteredException()
 
         hashed_password = utils.password.hash_password(user.password)
-        user_entry = UserEntry(email=user.email, hashed_password=hashed_password)
+        user_entry = UserEntry(
+            username=user.username, email=user.email, hashed_password=hashed_password
+        )
         self.db.add(user_entry)
         self.db.commit()
         self.db.refresh(user_entry)

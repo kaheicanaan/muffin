@@ -9,9 +9,12 @@ from database_schemas.users import UserEntry
 
 
 class UserNotFoundException(Exception):
-    def __init__(self, user_id: int = None, user_email: str = None):
+    def __init__(
+        self, user_id: int = None, username: str = None, user_email: str = None
+    ):
         super().__init__()
         self.user_id = user_id
+        self.username = username
         self.user_email = user_email
 
 
@@ -19,6 +22,12 @@ class EmailAlreadyUsedException(Exception):
     def __init__(self, user_email: str = None):
         super().__init__()
         self.user_email = user_email
+
+
+class UsernameAlreadyUsedException(Exception):
+    def __init__(self, username: str = None):
+        super().__init__()
+        self.username = username
 
 
 class UserProfile(object):
@@ -33,6 +42,28 @@ class UserProfile(object):
         user_entry = self.find_by_id(user_id)
         if user_entry is None:
             raise UserNotFoundException(user_id=user_id)
+        return user_entry
+
+    # pylint: disable=unsubscriptable-object
+    def find_by_username(self, username: str) -> Optional[UserEntry]:
+        return self.db.query(UserEntry).filter(UserEntry.username == username).first()
+
+    def get_by_username(self, username: str) -> UserEntry:
+        user_entry = self.find_by_username(username)
+        if user_entry is None:
+            raise UserNotFoundException(username=username)
+        return user_entry
+
+    def update_username(self, user_id: int, new_username: str) -> UserEntry:
+        user_entry = self.get_by_id(user_id)
+        # check if email duplicated
+        other_user_entry = self.find_by_username(new_username)
+        if other_user_entry:
+            raise UsernameAlreadyUsedException(username=new_username)
+
+        # update
+        user_entry.username = new_username
+        self.db.commit()
         return user_entry
 
     # pylint: disable=unsubscriptable-object
